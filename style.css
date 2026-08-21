@@ -6,8 +6,8 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #f4f6f8;
-    color: #222;
+    background-color: #FDF6F0; /* paleta pastel, crema suave */
+    color: #4A4A4A; /* gris oscuro suave en vez de negro puro */
     padding: 20px;
 }
 
@@ -17,14 +17,14 @@ body {
 }
 
 h1 {
-    color: #1a2b4c;
+    color: #8E6F9E; /* lila */
     text-align: center;
     margin-bottom: 5px;
 }
 
 .contenedor > p {
     text-align: center;
-    color: #666;
+    color: #9A8F86;
     margin-bottom: 20px;
 }
 
@@ -34,65 +34,82 @@ h1 {
     gap: 10px;
     max-width: 400px;
     margin: 0 auto 30px auto;
-    background: white;
+    background: #FFFFFF;
     padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(74, 74, 74, 0.08);
 }
 
 .formulario label {
     font-weight: bold;
-    color: #333;
+    color: #4A4A4A;
 }
 
-.formulario input {
+.formulario input,
+.formulario select {
     padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+    border: 1px solid #E8DCD4; /* beige suave */
+    border-radius: 8px;
     font-size: 16px;
+    background-color: #FFF9F0;
+    color: #4A4A4A;
+}
+
+.selector-moneda {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 5px;
 }
 
 #btn-calcular {
     padding: 12px;
-    background-color: #1a73e8;
-    color: white;
+    background-color: #FFD4D4; /* rosa pastel */
+    color: #4A4A4A;
     border: none;
-    border-radius: 4px;
+    border-radius: 8px;
     font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
 }
 
 #btn-calcular:hover {
-    background-color: #155ab6;
+    background-color: #FFC3C3;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background: white;
+    background: #FFF9F0;
 }
 
 th, td {
-    border: 1px solid #ccc;
+    border: 1px solid #E8DCD4;
     padding: 8px;
     text-align: right;
+    color: #4A4A4A;
 }
 
 th {
-    background-color: #1a2b4c;
-    color: white;
+    background-color: #C9B1D0; /* lila pastel */
+    color: #FFFFFF;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #FFF9F0;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #f0f4f8;
+    background-color: #F9F3E6;
 }
 
 #resumen p, #equiv-divisas p {
-    background: white;
+    background: #FFFFFF;
     padding: 8px 12px;
-    border-radius: 4px;
+    border-radius: 8px;
     margin-top: 6px;
+    border: 1px solid #E8DCD4;
 }
 
 /* en celular la tabla se puede scrollear horizontal */
@@ -111,15 +128,23 @@ tbody tr:nth-child(even) {
 #btn-excel,
 #btn-pdf {
     padding: 10px 16px;
-    border: 1px solid #c9d2db;
-    border-radius: 4px;
+    border: none;
+    border-radius: 8px;
     font-size: 15px;
-    color: #1a2b4c;
-    background-color: #eaf0f6;
+    font-weight: bold;
+    color: #4A4A4A;
     cursor: pointer;
+}
+
+#btn-excel {
+    background-color: #B5D8EB; /* azul cielo pastel */
+}
+
+#btn-pdf {
+    background-color: #C9B1D0; /* lila pastel */
 }
 
 #btn-excel:hover,
 #btn-pdf:hover {
-    filter: brightness(0.96);
+    filter: brightness(0.95);
 }
