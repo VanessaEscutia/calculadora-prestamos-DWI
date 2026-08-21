@@ -78,6 +78,29 @@ function pintarResultados(tabla, totalIntereses, totalIva) {
                            '<p>Total de IVA pagado: $' + totalIva.toFixed(2) + '</p>';
 }
 
+// obtiene el tipo de cambio y pinta los equivalentes en USD/EUR
+// URL hardcodeada porque la version free no necesita api key
+function obtenerTipoCambio(primeraCuota, totalPrestamo) {
+    fetch('https://open.er-api.com/v6/latest/MXN')
+        .then(function(respuesta) {
+            return respuesta.json();
+        })
+        .then(function(datos) {
+            const tcUSD = datos.rates.USD;
+            const tcEUR = datos.rates.EUR;
+            const equivalenteUsd = (primeraCuota * tcUSD).toFixed(2);
+            const equivalenteEur = (primeraCuota * tcEUR).toFixed(2);
+            const equivDivisas = document.getElementById('equiv-divisas');
+            equivDivisas.innerHTML =
+                '<p>Primera cuota: $' + equivalenteUsd + ' USD / €' + equivalenteEur + ' EUR</p>' +
+                '<p>Total del préstamo: $' + (totalPrestamo * tcUSD).toFixed(2) + ' USD / $' + (totalPrestamo * tcEUR).toFixed(2) + ' EUR</p>';
+        })
+        .catch(function(error) {
+            // por ahora solo lo escribo en consola, despues veo que se le muestra al usuario
+            console.log(error);
+        });
+}
+
 btnCalcular.addEventListener('click', function() {
     // valido hasta aqui porque si valido mientras escriben molesta mucho
     const monto = parseFloat(inputMonto.value);
@@ -99,4 +122,6 @@ btnCalcular.addEventListener('click', function() {
     }
 
     pintarResultados(tabla, totalIntereses, totalIva);
+
+    obtenerTipoCambio(tabla[0].cuotaFija, monto + totalIntereses + totalIva);
 });
