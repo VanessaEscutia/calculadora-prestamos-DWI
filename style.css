@@ -1,0 +1,103 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f6f8;
+    color: #222;
+    padding: 20px;
+}
+
+.contenedor {
+    max-width: 960px;
+    margin: 0 auto;
+}
+
+h1 {
+    color: #1a2b4c;
+    text-align: center;
+    margin-bottom: 5px;
+}
+
+.contenedor > p {
+    text-align: center;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    max-width: 400px;
+    margin: 0 auto 30px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+}
+
+.formulario label {
+    font-weight: bold;
+    color: #333;
+}
+
+.formulario input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+#btn-calcular {
+    padding: 12px;
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+#btn-calcular:hover {
+    background-color: #155ab6;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    background: white;
+}
+
+th, td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: right;
+}
+
+th {
+    background-color: #1a2b4c;
+    color: white;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #f0f4f8;
+}
+
+#resumen p, #equiv-divisas p {
+    background: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin-top: 6px;
+}
+
+/* en celular la tabla se puede scrollear horizontal */
+@media (max-width: 600px) {
+    #resultados {
+        overflow-x: auto;
+    }
+}
