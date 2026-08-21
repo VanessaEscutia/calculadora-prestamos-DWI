@@ -6,8 +6,8 @@
 
 body {
     font-family: Arial, Helvetica, sans-serif;
-    background-color: #FDF6F0; /* paleta pastel, crema suave */
-    color: #4A4A4A; /* gris oscuro suave en vez de negro puro */
+    background-color: #FFFFFF; /* fondo blanco plano, el pastel completo se veia muy infantil */
+    color: #333333;
     padding: 20px;
 }
 
@@ -17,14 +17,14 @@ body {
 }
 
 h1 {
-    color: #8E6F9E; /* lila */
+    color: #1a2b4c;
     text-align: center;
     margin-bottom: 5px;
 }
 
 .contenedor > p {
     text-align: center;
-    color: #9A8F86;
+    color: #666;
     margin-bottom: 20px;
 }
 
@@ -34,25 +34,23 @@ h1 {
     gap: 10px;
     max-width: 400px;
     margin: 0 auto 30px auto;
-    background: #FFFFFF;
+    background: white;
     padding: 20px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(74, 74, 74, 0.08);
+    border-radius: 8px;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.1);
 }
 
 .formulario label {
     font-weight: bold;
-    color: #4A4A4A;
+    color: #333;
 }
 
 .formulario input,
 .formulario select {
     padding: 10px;
-    border: 1px solid #E8DCD4; /* beige suave */
-    border-radius: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
     font-size: 16px;
-    background-color: #FFF9F0;
-    color: #4A4A4A;
 }
 
 .selector-moneda {
@@ -64,52 +62,51 @@ h1 {
 
 #btn-calcular {
     padding: 12px;
-    background-color: #FFD4D4; /* rosa pastel */
-    color: #4A4A4A;
+    background-color: #1A73E8; /* azul */
+    color: white;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px;
     font-size: 16px;
-    font-weight: bold;
     cursor: pointer;
 }
 
 #btn-calcular:hover {
-    background-color: #FFC3C3;
+    background-color: #155AB6;
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 15px;
-    background: #FFF9F0;
+    background: white;
 }
 
 th, td {
-    border: 1px solid #E8DCD4;
+    border: 1px solid #D6E4F0; /* bordes azul clarito para que combine con el boton */
     padding: 8px;
     text-align: right;
-    color: #4A4A4A;
+    color: #333333;
 }
 
 th {
-    background-color: #C9B1D0; /* lila pastel */
-    color: #FFFFFF;
+    background-color: #1A5FA8; /* encabezado azul como el boton */
+    color: white;
 }
 
 tbody tr:nth-child(odd) {
-    background-color: #FFF9F0;
+    background-color: #FFFFFF;
 }
 
 tbody tr:nth-child(even) {
-    background-color: #F9F3E6;
+    background-color: #EDF4FB; /* azul muy clarito para alternar filas */
 }
 
 #resumen p, #equiv-divisas p {
-    background: #FFFFFF;
+    background: white;
     padding: 8px 12px;
-    border-radius: 8px;
+    border-radius: 4px;
     margin-top: 6px;
-    border: 1px solid #E8DCD4;
+    border: 1px solid #E5E5E5;
 }
 
 /* en celular la tabla se puede scrollear horizontal */
@@ -128,23 +125,19 @@ tbody tr:nth-child(even) {
 #btn-excel,
 #btn-pdf {
     padding: 10px 16px;
-    border: none;
-    border-radius: 8px;
+    border: 1px solid #C9D2DB;
+    border-radius: 4px;
     font-size: 15px;
-    font-weight: bold;
-    color: #4A4A4A;
+    color: #1a2b4c;
+    background-color: #FFFFFF;
     cursor: pointer;
 }
 
 #btn-excel {
-    background-color: #B5D8EB; /* azul cielo pastel */
+    background-color: #EAF0F6; /* azul grisaceo clarito */
 }
 
-#btn-pdf {
-    background-color: #C9B1D0; /* lila pastel */
-}
-
-#btn-excel:hover,
-#btn-pdf:hover {
-    filter: brightness(0.95);
+#btn-pdf:hover,
+#btn-excel:hover {
+    filter: brightness(0.96);
 }
