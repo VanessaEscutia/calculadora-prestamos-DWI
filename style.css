@@ -101,3 +101,25 @@ tbody tr:nth-child(even) {
         overflow-x: auto;
     }
 }
+
+.botones-exportar {
+    display: flex;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+#btn-excel,
+#btn-pdf {
+    padding: 10px 16px;
+    border: 1px solid #c9d2db;
+    border-radius: 4px;
+    font-size: 15px;
+    color: #1a2b4c;
+    background-color: #eaf0f6;
+    cursor: pointer;
+}
+
+#btn-excel:hover,
+#btn-pdf:hover {
+    filter: brightness(0.96);
+}
