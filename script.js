@@ -62,6 +62,50 @@ function convertirMontos(monto, moneda, tipoCambioFijo) {
     return monto;
 }
 
+// exporta la tabla a excel con SheetJS (la cargo por CDN en el html)
+// recibe las filas ya armadas y el resumen, asi es mas facil de probar
+function exportarExcel(filas, resumen) {
+    const hojaTabla = XLSX.utils.json_to_sheet(filas);
+    const libro = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(libro, hojaTabla, "Amortizacion");
+
+    const hojaResumen = XLSX.utils.json_to_sheet([resumen]);
+    XLSX.utils.book_append_sheet(libro, hojaResumen, "Resumen");
+
+    XLSX.writeFile(libro, "tabla_amortizacion.xlsx");
+}
+
+// genera el PDF con jsPDF + autoTable
+function exportarPDF(columnas, filas, lineasResumen) {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    const ancho = doc.internal.pageSize.getWidth();
+    doc.setFontSize(14);
+    doc.text("Tabla de Amortización - SmartCredit UTVT", ancho / 2, 15, { align: "center" });
+    doc.setFontSize(10);
+    doc.text("Fecha de generación: " + new Date().toLocaleString(), ancho / 2, 23, { align: "center" });
+
+    doc.autoTable({
+        head: [columnas],
+        body: filas,
+        startY: 30,
+        margin: { left: 14, right: 14 },
+        styles: { fontSize: 9 },
+        headStyles: { fillColor: [26, 95, 168], textColor: 255 } // azul como los encabezados de la pagina
+    });
+
+    // resumen al final de la tabla
+    let y = doc.lastAutoTable.finalY + 10;
+    doc.setFontSize(10);
+    for (let i = 0; i < lineasResumen.length; i++) {
+        doc.text(lineasResumen[i], 14, y);
+        y += 7;
+    }
+
+    doc.save("tabla_amortizacion.pdf");
+}
+
 // ==================== frontend ====================
 
 const inputMonto = document.getElementById('monto');
@@ -190,4 +234,89 @@ selectMoneda.addEventListener('change', function() {
     if (ultimaTabla) {
         pintarResultados(ultimaTabla, ultimosTotales.intereses, ultimosTotales.iva, monedaSeleccionada);
     }
+});
+
+// ===== exportaciones =====
+// armo las filas respetando la moneda que esta viendo el usuario
+// ojo: si la API no ha respondido, convertirMontos regresa pesos aunque diga USD, caso raro
+function armarFilasExport() {
+    return ultimaTabla.map(function(f) {
+        if (monedaSeleccionada === 'TODAS') {
+            return {
+                "N° Cuota": f.numeroCuota,
+                "Saldo Inicial (MXN)": f.saldoInicial,
+                "Interés (MXN)": f.interes,
+                "IVA (MXN)": f.iva,
+                "Amortización (MXN)": f.amortizacion,
+                "Cuota Fija (MXN)": f.cuotaFija,
+                "Saldo Final (MXN)": f.saldoFinal,
+                "Cuota Fija (USD)": Number(convertirMontos(f.cuotaFija, 'USD').toFixed(2)),
+                "Cuota Fija (EUR)": Number(convertirMontos(f.cuotaFija, 'EUR').toFixed(2))
+            };
+        }
+        if (monedaSeleccionada === 'MXN') {
+            return {
+                "N° Cuota": f.numeroCuota,
+                "Saldo Inicial": f.saldoInicial,
+                "Interés": f.interes,
+                "IVA": f.iva,
+                "Amortización": f.amortizacion,
+                "Cuota Fija": f.cuotaFija,
+                "Saldo Final": f.saldoFinal
+            };
+        }
+        // USD o EUR: convierto todas las columnas
+        return {
+            "N° Cuota": f.numeroCuota,
+            "Saldo Inicial": Number(convertirMontos(f.saldoInicial, monedaSeleccionada).toFixed(2)),
+            "Interés": Number(convertirMontos(f.interes, monedaSeleccionada).toFixed(2)),
+            "IVA": Number(convertirMontos(f.iva, monedaSeleccionada).toFixed(2)),
+            "Amortización": Number(convertirMontos(f.amortizacion, monedaSeleccionada).toFixed(2)),
+            "Cuota Fija": Number(convertirMontos(f.cuotaFija, monedaSeleccionada).toFixed(2)),
+            "Saldo Final": Number(convertirMontos(f.saldoFinal, monedaSeleccionada).toFixed(2))
+        };
+    });
+}
+
+function armarResumenExport() {
+    return {
+        "Monto": inputMonto.value,
+        "Tasa Anual (%)": inputTasa.value,
+        "Plazo (meses)": inputPlazo.value,
+        "Total Intereses": ultimosTotales.intereses.toFixed(2),
+        "Total IVA": ultimosTotales.iva.toFixed(2),
+        "Cuota Mensual": ultimaTabla[0].cuotaFija
+    };
+}
+
+document.getElementById('btn-excel').addEventListener('click', function() {
+    if (!ultimaTabla) {
+        alert('Primero calcula un crédito');
+        return;
+    }
+    exportarExcel(armarFilasExport(), armarResumenExport());
+});
+
+document.getElementById('btn-pdf').addEventListener('click', function() {
+    if (!ultimaTabla) {
+        alert('Primero calcula un crédito');
+        return;
+    }
+    const etiqueta = monedaSeleccionada === 'TODAS' ? 'MXN' : monedaSeleccionada;
+    const columnas = ['N° Cuota', 'Saldo Inicial (' + etiqueta + ')', 'Interés (' + etiqueta + ')', 'IVA (' + etiqueta + ')', 'Amortización (' + etiqueta + ')', 'Cuota Fija (' + etiqueta + ')', 'Saldo Final (' + etiqueta + ')'];
+    if (monedaSeleccionada === 'TODAS') {
+        columnas.push('Cuota Fija (USD)', 'Cuota Fija (EUR)');
+    }
+    // para el pdf necesito arreglos simples, no objetos como el excel
+    const filas = armarFilasExport().map(function(obj) { return Object.values(obj); });
+    const resumen = armarResumenExport();
+    const lineasResumen = [
+        "Monto: $" + resumen["Monto"],
+        "Tasa Anual: " + resumen["Tasa Anual (%)"] + "%",
+        "Plazo: " + resumen["Plazo (meses)"] + " meses",
+        "Total Intereses: $" + resumen["Total Intereses"],
+        "Total IVA: $" + resumen["Total IVA"],
+        "Cuota Mensual: $" + resumen["Cuota Mensual"]
+    ];
+    exportarPDF(columnas, filas, lineasResumen);
 });
