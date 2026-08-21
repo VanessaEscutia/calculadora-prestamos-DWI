@@ -83,6 +83,11 @@ function pintarResultados(tabla, totalIntereses, totalIva) {
 function obtenerTipoCambio(primeraCuota, totalPrestamo) {
     fetch('https://open.er-api.com/v6/latest/MXN')
         .then(function(respuesta) {
+            // este chequeo lo agregue porque si la API fallaba el .then de abajo
+            // se quedaba raro y no avisaba nada
+            if (!respuesta.ok) {
+                throw new Error('La API respondio con error ' + respuesta.status);
+            }
             return respuesta.json();
         })
         .then(function(datos) {
@@ -96,8 +101,11 @@ function obtenerTipoCambio(primeraCuota, totalPrestamo) {
                 '<p>Total del préstamo: $' + (totalPrestamo * tcUSD).toFixed(2) + ' USD / $' + (totalPrestamo * tcEUR).toFixed(2) + ' EUR</p>';
         })
         .catch(function(error) {
-            // por ahora solo lo escribo en consola, despues veo que se le muestra al usuario
-            console.log(error);
+            console.error(error);
+            // aviso al usuario y la app sigue funcionando en pesos
+            alert('No se pudo obtener el tipo de cambio');
+            const equivDivisas = document.getElementById('equiv-divisas');
+            equivDivisas.innerHTML = '<p>No se pudo obtener el tipo de cambio, los resultados se muestran en pesos</p>';
         });
 }
 
