@@ -106,7 +106,15 @@ function exportarPDF(columnas, filas, lineasResumen) {
     doc.save("tabla_amortizacion.pdf");
 }
 
+// esto lo tuve que agregar para poder hacer require desde las pruebas con node
+// (en el navegador module no existe y no pasa nada)
+if (typeof module !== 'undefined') {
+    module.exports = { calcularCuota, calcularTablaAmortizacion, convertirMontos, exportarExcel, exportarPDF };
+}
+
 // ==================== frontend ====================
+// todo lo del DOM va dentro de este if para que node no explote con las pruebas
+if (typeof window !== 'undefined') {
 
 const inputMonto = document.getElementById('monto');
 const inputTasa = document.getElementById('tasa');
@@ -320,3 +328,4 @@ document.getElementById('btn-pdf').addEventListener('click', function() {
     ];
     exportarPDF(columnas, filas, lineasResumen);
 });
+}
